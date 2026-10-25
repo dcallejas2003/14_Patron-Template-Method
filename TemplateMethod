@@ -1,0 +1,74 @@
+package service;
+
+public abstract class BebidaCaliente<T> {
+    private String nombreBebida;
+    private T porcion;
+
+    public BebidaCaliente(String nombreBebida, T porcion) {
+        this.nombreBebida = nombreBebida;
+        this.porcion = porcion;
+    }
+
+    public final void prepararReceta() throws Exception {
+        verificarDisponibilidadIngrediente();
+        hervirAgua();
+        verterEnTaza();
+        prepararIngredientePrincipal(this.porcion);
+        agregarCondimentosExtra();
+    }
+
+    private void verificarDisponibilidadIngrediente() throws Exception {
+        if (porcion == null) {
+            throw new IllegalArgumentException("Error: no se ha definido la porcion para " + nombreBebida);
+        }
+        System.out.println("Iniciando preparacion de: " + nombreBebida);
+    }
+
+    public void hervirAgua() {
+        System.out.println("-- Hirviendo agua pura a 100 grados Celcius...");
+    }
+
+    public void verterEnTaza() {
+        System.out.println("-- Sirviendo el agua caliente en la taza...");
+    }
+
+    public abstract void prepararIngredientePrincipal(T porcion);
+    public abstract void agregarCondimentosExtra();
+
+    public String getNombreBebida() { return nombreBebida; }
+    public T getPorcion() { return porcion; }
+}
+
+public class Cafe<T> extends BebidaCaliente<T> {
+
+    public Cafe(T porcion) {
+        super("Café Filtrado", porcion);
+    }
+
+    @Override
+    public void prepararIngredientePrincipal(T porcion) {
+        System.out.println("-> Colando el café molido utilizando " + porcion + " de café.");
+    }
+
+    @Override
+    public void agregarCondimentosExtra() {
+        System.out.println("-> Añadiendo azúcar al gusto y un toque de leche.\n");
+    }
+}
+
+public class Te<T> extends BebidaCaliente<T> {
+
+    public Te(T porcion) {
+        super("Té de Manzanilla", porcion);
+    }
+
+    @Override
+    public void prepararIngredientePrincipal(T porcion) {
+        System.out.println("-> Infusionando la bolsita de té con " + porcion + " de agua infusionada.");
+    }
+
+    @Override
+    public void agregarCondimentosExtra() {
+        System.out.println("-> Agregando unas gotas de limón.\n");
+    }
+}
